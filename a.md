@@ -1,19 +1,25 @@
-# Conteúdo da Página 39
+# Páginas que tratam sobre estresse e um breve resumo de cada
 
-**Pergunta:** página 39
+**Página do leitor: 40**
+O estresse psicossocial é definido como relacionado a diversas dimensões, como estresse no trabalho e em casa, estresse financeiro e ocorrência de eventos adversos na vida. Pessoas com Doenças Crônicas Não Transmissíveis (DCNT) apresentam maior prevalência de depressão, associada à piora do estado de saúde, menor adesão e aumento da utilização ineficaz dos recursos de saúde. O próprio tratamento da DCNT pode ser um fator gerador de estresse.
+Fonte: teste_grande.pdf | Página do leitor: 40
 
-Com base no documento, a página 39, sob o título "Quadro 6 - Manejo da dieta inadequada (a)", apresenta as seguintes informações e recomendações para adultos:
+**Página do leitor: 41**
+O manejo do estresse psicossocial inclui a identificação de fatores que diminuem a adesão ao estilo de vida saudável e ao tratamento medicamentoso da DCNT, a atenção aos sinais e sintomas de estresse e sofrimento gerado pela doença, a adequação de todas as decisões terapêuticas às condições psicossociais do indivíduo e família, e a promoção ou encaminhamento do usuário para práticas de gerenciamento e controle de estresse.
+Fonte: teste_grande.pdf | Página do leitor: 41
 
-**Adultos:**
-*   **Breve anamnese dos hábitos alimentares investigando o consumo de alimentos saudáveis, refrigerantes e ultraprocessados.**
-    *   Consumir diariamente: 3 porções de frutas e de verduras e legumes;
-    *   Açúcares livres e gorduras saturadas não devem ultrapassar 10% do valor energético total diário;
-    *   Consumo diário máximo de sódio de 2.300 mg, equivalente a 5 g sal ou uma colher de chá. Atentar pois 80% do consumo de sal envolve sal oculto em alimentos processados/industrializados.
-*   **CUIDADOS/INTERVENÇÕES DE ENFERMAGEM**
-    *   Investigar hábitos alimentares de todas as pessoas com FRCV, diagnóstico recente ou em tratamento para DCNT;
-    *   Orientar sobre hábitos alimentares saudáveis;
-    *   Realizar orientações individualizadas para pessoas com
+**Página do leitor: 42**
+A espiritualidade e a religiosidade podem levar a posturas de enfrentamento positivo ou negativo. Níveis elevados e benéficos de espiritualidade/religiosidade estão associados a menores prevalências de tabagismo, consumo de álcool, excesso de peso, estresse e sedentarismo, e à diminuição de sintomas de depressão e ansiedade.
+Fonte: teste_grande.pdf | Página do leitor: 42
 
----
-**Nome do Documento:** PROTOCOLO DE CONSULTA DE ENFERMAGEM HIPERTENSÃO E DIABETES
-**Página do Documento:** 39 (página do documento)
+**Página do leitor: 79**
+No contexto da pseudocrise hipertensiva, que é a elevação da pressão arterial associada a sintomas que não permitem estabelecer uma relação causal direta com a hipertensão, são mencionados como fatores o relato de ansiedade e uma "situação estressante recente".
+Fonte: teste_grande.pdf | Página do leitor: 79
+
+**Página do leitor: 165**
+No Questionário FICA para avaliação de espiritualidade, a seção "I - Importância ou influência" pergunta se "A fé ou crenças já influenciaram você a lidar com estresse ou problemas de saúde?". No Questionário HOPE, a seção "H – Há fontes de esperança?" aborda o que dá apoio e faz a pessoa "andar para frente" em tempos difíceis, o que pode estar relacionado ao manejo do estresse.
+Fonte: teste_grande.pdf | Página do leitor: 165
+
+**Página do leitor: 5**
+O "Quadro 9 - Manejo do estresse psicossocial" é listado no sumário do documento, indicando a existência de uma seção ou quadro específico que trata sobre este tema.
+Fonte: teste_grande.pdf | Página do leitor: 5 
