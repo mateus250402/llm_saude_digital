@@ -1,9 +1,19 @@
-from typing import List
+from typing import List, Dict
 from langchain.schema import Document
 from utils.search import keyword_search, extract_answer
-from utils.output import save_answer_md
+from utils.output import save_answer_json
 
-def interactive_loop(qa_chain, stuff_chain, all_docs: List[Document], max_results: int = 20, expand_threshold: int = 10):
+def interactive_loop(qa_chain, stuff_chain, all_docs: List[Document], max_results: int = 20, expand_threshold: int = 10) -> List[Dict]:
+    """
+    Loop interativo que:
+    - tenta keyword_search em all_docs;
+    - se houver poucos matches (< expand_threshold), expande para todos os chunks dos mesmos arquivos;
+    - usa stuff_chain com os chunks selecionados ou qa_chain como fallback;
+    - salva saída em JSON.
+    Retorna o histórico de interações.
+    """
+    historico = []
+
     while True:
         query = input("👤 Digite sua pergunta: ")
         if query.lower() in ["sair", "exit", "quit"]:
@@ -13,11 +23,9 @@ def interactive_loop(qa_chain, stuff_chain, all_docs: List[Document], max_result
         print(f"[debug] keyword matches: {len(matched_docs)}")
 
         if matched_docs:
-            # se poucos matches, inclua todos os chunks dos mesmos arquivos para ampliar cobertura
             if len(matched_docs) < expand_threshold:
                 sources = {d.metadata.get("source") for d in matched_docs}
                 expanded = [d for d in all_docs if d.metadata.get("source") in sources]
-                # ordenar por source e página
                 def _key(d):
                     src = d.metadata.get("source", "")
                     try:
@@ -42,7 +50,7 @@ def interactive_loop(qa_chain, stuff_chain, all_docs: List[Document], max_result
         print(answer, "\n")
 
         try:
-            md_file = save_answer_md(answer, query, docs_for_sources, output_dir="output")
-            print(f"✅ Salvo em: {md_file}")
+            dados_json = save_answer_json(answer, query, docs_for_sources, output_dir="output")
+            historico.append({"pergunta": query, "resposta": answer, "dados": dados_json})
         except Exception as e:
-            print(f"⚠️ Erro ao salvar MD: {e}")
+            print(f"⚠️ Erro ao salvar arquivos: {e}")

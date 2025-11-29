@@ -9,8 +9,8 @@ def main():
     configure_ai()
 
     pdf_list = [
-        "pdf/teste_grande.pdf",
-        # adicionar outros PDFs aqui
+        "pdf\Fluxograma_Crônicos_Idoso.pdf",
+        "pdf\ProtocoloEnfermagemHipertensaoDiabetes.pdf"
     ]
 
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
