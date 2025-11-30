@@ -1,36 +1,29 @@
-from langchain_huggingface import HuggingFaceEmbeddings
-from config.config_ai import configure_ai
-from utils.indexUpdate import build_or_update_index
-from utils.aiConfig import criar_qa_chain_from_retriever
-from utils.aiTalk import interactive_loop
-from utils.inspect import inspect_docs
+import streamlit as st
+import os
 
-def main():
-    configure_ai()
+st.set_page_config(page_title="LLM Saúde", page_icon="🩺")
 
-    pdf_list = [
-        "pdf\Fluxograma_Crônicos_Idoso.pdf",
-        "pdf\ProtocoloEnfermagemHipertensaoDiabetes.pdf"
-    ]
+USERNAME = "admin"
+PASSWORD = "admin"
 
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    
-    db, all_docs = build_or_update_index(
-        pdf_list,
-        embeddings,
-        index_dir="faiss_index",
-        processed_file="processed.json",
-        docs_cache="docs_cache.json",
-        chunk=1000,
-        overlap=200,
-    )
-    
-    inspect_docs(all_docs)
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-    retriever = db.as_retriever(search_kwargs={"k": 200})
-    qa_chain, stuff_chain = criar_qa_chain_from_retriever(retriever, model_name="gemini-2.5-flash")
+def login_screen():
+    st.title("🔐 Login - LLM Saúde")
+    user = st.text_input("Usuário")
+    pwd = st.text_input("Senha", type="password")
 
-    interactive_loop(qa_chain, stuff_chain, all_docs, max_results=2000)
+    if st.button("Entrar"):
+        if user == USERNAME and pwd == PASSWORD:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("Credenciais inválidas!")
 
-if __name__ == "__main__":
-    main()
+if not st.session_state.logged_in:
+    login_screen()
+    st.stop()
+
+# Já autenticado → redireciona para a página de PDFs
+st.switch_page("pages/pdf_selector.py")

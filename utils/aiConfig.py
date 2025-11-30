@@ -5,17 +5,17 @@ from langchain.chains.retrieval import create_retrieval_chain
 
 def criar_qa_chain_from_retriever(retriever, model_name: str):
     prompt_template = """
-Responda à pergunta apenas com base no conteúdo fornecido do documento. Dê respostas completas.
-Você é um assistente da área da saúde.
-Se a informação aparecer em forma de lista no documento, copie todos os itens.
-Se não houver resposta no documento, diga: "Não sei com base no documento."
-Sempre exibir o nome do documento e a(s) pagina(s) do PDF de onde a informação foi retirada.
-Formatar a resposta em json com os campos: pergunta, resposta, fonte.
+    Você é um assistente da área da saúde.
+    Use apenas informações encontradas no documento.
+    Se não souber, responda: "Não sei com base no documento".
+    Absolutamente sempre informe a fonte da informação no formato (nome_do_documento, número_das_páginas) ao final, ou (número_da_página) no corpo do texto se julgar necessário, se em nome_do_documento estiver "pdf/..." pode omitir "pdf/".
 
-Contexto (trecho do documento): {context}
+    Contexto:
+    {context}
 
-Pergunta: {input}
-"""
+    Pergunta: {input}
+    """
+
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "input"])
 
     llm = ChatGoogleGenerativeAI(model=model_name)

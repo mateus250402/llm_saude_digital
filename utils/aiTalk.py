@@ -4,14 +4,6 @@ from utils.search import keyword_search, extract_answer
 from utils.output import save_answer_json
 
 def interactive_loop(qa_chain, stuff_chain, all_docs: List[Document], max_results: int = 20, expand_threshold: int = 10) -> List[Dict]:
-    """
-    Loop interativo que:
-    - tenta keyword_search em all_docs;
-    - se houver poucos matches (< expand_threshold), expande para todos os chunks dos mesmos arquivos;
-    - usa stuff_chain com os chunks selecionados ou qa_chain como fallback;
-    - salva saída em JSON.
-    Retorna o histórico de interações.
-    """
     historico = []
 
     while True:
