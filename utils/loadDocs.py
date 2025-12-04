@@ -1,4 +1,5 @@
 import os
+import shutil
 import json
 import hashlib
 from typing import List
@@ -6,6 +7,23 @@ from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
+
+def reset_index(
+    index_dir: str = "faiss_index",
+    processed_file: str = "processed.json",
+    docs_cache: str = "docs_cache.json"
+):
+    """Remove o índice FAISS e arquivos auxiliares, garantindo uma sessão limpa."""
+    if os.path.exists(index_dir):
+        shutil.rmtree(index_dir)
+
+    if os.path.exists(processed_file):
+        os.remove(processed_file)
+
+    if os.path.exists(docs_cache):
+        os.remove(docs_cache)
+
+    print("🔄 Índice FAISS resetado com sucesso!\n")
 
 def preparar_documentos(pdf_path: str, chunk: int = 1000, overlap: int = 200) -> List[Document]:
     loader = PyPDFLoader(pdf_path)

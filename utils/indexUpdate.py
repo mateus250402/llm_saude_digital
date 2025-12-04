@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from typing import List
 from langchain_community.vectorstores import FAISS
-from langchain.schema import Document
+
 from utils.loadDocs import (
     preparar_documentos,
     _file_hash,

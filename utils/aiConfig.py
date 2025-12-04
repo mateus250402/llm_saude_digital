@@ -8,7 +8,8 @@ def criar_qa_chain_from_retriever(retriever, model_name: str):
     Você é um assistente da área da saúde.
     Use apenas informações encontradas no documento.
     Se não souber, responda: "Não sei com base no documento".
-    Absolutamente sempre informe a fonte da informação no formato (nome_do_documento, número_das_páginas) ao final, ou (número_da_página) no corpo do texto se julgar necessário, se em nome_do_documento estiver "pdf/..." pode omitir "pdf/".
+    Absolutamente sempre informe a fonte da informação no formato (nome_do_documento, número_das_páginas) ao final, ou (número_da_página) no corpo do texto se
+    julgar necessário, se em nome_do_documento estiver "pdf/..." pode omitir "pdf/".
 
     Contexto:
     {context}

@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#5DADE2"          # Azul céu suave
+backgroundColor = "#FBFCFC"       # Branco off-white
+secondaryBackgroundColor = "#EBF5FB"  # Azul glacial
+textColor = "#1B4F72"             # Azul marinho
+font = "sans serif"
