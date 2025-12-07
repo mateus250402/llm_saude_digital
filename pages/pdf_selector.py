@@ -20,7 +20,13 @@ if not pdfs:
     st.warning("Nenhum PDF encontrado na pasta 'pdf/'. Adicione arquivos e recarregue.")
     st.stop()
 
-opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs)
+# Checkbox para selecionar todos
+selecionar_todos = st.checkbox("Selecionar todos os protocolos")
+
+if selecionar_todos:
+    opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs, default=pdfs)
+else:
+    opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs)
 
 if st.button("Processar PDFs") and opcoes:
 

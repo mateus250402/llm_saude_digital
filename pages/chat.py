@@ -2,70 +2,78 @@ import streamlit as st
 import json
 import time
 
-# CSS para diferenciar visualmente user e assistant
+# Configuração de CSS Avançada para Layout tipo "Bubble"
 st.markdown("""
 <style>
-    /* Container geral das mensagens */
-    div.stChatMessage[data-testid="stChatMessage"] {
-        padding: 14px !important;
-        border-radius: 12px !important;
-        margin-bottom: 12px !important;
+    /* 1. Reseta o estilo padrão do container externo da mensagem */
+    div[data-testid="stChatMessage"] {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* --- MENSAGEM DO USUÁRIO --- */
+    
+    /* Inverte a ordem (Avatar na direita) */
+    div[data-testid="stChatMessage"]:has(div.user-marker) {
+        flex-direction: row-reverse;
     }
     
-    /* Mensagens do usuário - azul escuro */
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
-        background-color: #2874A6 !important;
-        border: 1px solid #1F618D !important;
-    }
-    
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) p,
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) div {
+    /* Estiliza o BALÃO (Conteúdo interno) do usuário */
+    div[data-testid="stChatMessage"]:has(div.user-marker) div[data-testid="stChatMessageContent"] {
+        background-color: #1B4F72 !important; /* Azul Escuro */
         color: #FFFFFF !important;
+        
+        /* Formato do balão */
+        border-radius: 15px 0px 15px 15px !important; /* Canto pontudo no topo direito */
+        padding: 1rem !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        
+        /* Posicionamento e Tamanho */
+        margin-left: auto !important; /* Empurra para a direita */
+        margin-right: 10px !important; /* Espaço entre balão e avatar */
+        max-width: 75% !important; /* Limita a largura (efeito GPT/WhatsApp) */
+        text-align: right;
+    }
+
+    /* Força a cor do texto dentro do balão do usuário */
+    div[data-testid="stChatMessage"]:has(div.user-marker) p,
+    div[data-testid="stChatMessage"]:has(div.user-marker) div {
+        color: #FFFFFF !important;
+        text-align: right;
     }
     
-    /* Mensagens do assistente - azul claro */
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
-        background-color: #D6EAF8 !important;
-        border: 1px solid #AED6F1 !important;
-    }
+    /* --- MENSAGEM DO ASSISTENTE --- */
     
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) p,
-    div.stChatMessage[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) div {
+    /* Estiliza o BALÃO do assistente */
+    div[data-testid="stChatMessage"]:has(div.assistant-marker) div[data-testid="stChatMessageContent"] {
+        background-color: #EBF5FB !important; /* Azul Claro */
         color: #1B4F72 !important;
+        border: 1px solid #D6EAF8 !important;
+        
+        /* Formato do balão */
+        border-radius: 0px 15px 15px 15px !important; /* Canto pontudo no topo esquerdo */
+        padding: 1rem !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        
+        /* Posicionamento e Tamanho */
+        margin-right: auto !important; /* Empurra para a esquerda */
+        margin-left: 10px !important;
+        max-width: 85% !important;
     }
     
-    /* Animação de carregamento */
-    .loading-dots {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+    /* Texto do assistente */
+    div[data-testid="stChatMessage"]:has(div.assistant-marker) p,
+    div[data-testid="stChatMessage"]:has(div.assistant-marker) div {
+        color: #1B4F72 !important;
+        text-align: left;
     }
-    
-    .loading-dots span {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #5DADE2;
-        animation: bounce 1.4s infinite ease-in-out both;
-    }
-    
-    .loading-dots span:nth-child(1) {
-        animation-delay: -0.32s;
-    }
-    
-    .loading-dots span:nth-child(2) {
-        animation-delay: -0.16s;
-    }
-    
-    @keyframes bounce {
-        0%, 80%, 100% { 
-            transform: scale(0);
-            opacity: 0.5;
-        }
-        40% { 
-            transform: scale(1);
-            opacity: 1;
-        }
+
+    /* Esconde os marcadores técnicos */
+    .user-marker, .assistant-marker {
+        display: none;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -79,37 +87,44 @@ if "qa_chain" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Exibe histórico de mensagens
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+# --- FUNÇÃO AUXILIAR PARA EXIBIR MENSAGENS COM MARCADOR E AVATAR ---
+def exibir_mensagem(role, content):
+    # Define o ícone com base no papel
+    icone = "👤" if role == "user" else "🩺"
+    
+    with st.chat_message(role, avatar=icone):
+        # Injeta o marcador invisível para o CSS funcionar
+        if role == "user":
+            st.markdown('<div class="user-marker"></div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="assistant-marker"></div>', unsafe_allow_html=True)
+        
+        st.markdown(content)
 
-# Campo de entrada
+# Exibe histórico
+for msg in st.session_state.messages:
+    exibir_mensagem(msg["role"], msg["content"])
+
+# Input do usuário
 pergunta = st.chat_input("Digite sua pergunta...")
 
 if pergunta:
-    # Adiciona mensagem do usuário
+    # 1. Exibe e salva pergunta do usuário
     st.session_state.messages.append({"role": "user", "content": pergunta})
-    with st.chat_message("user"):
-        st.markdown(pergunta)
+    exibir_mensagem("user", pergunta)
 
-    # Mostra animação de carregamento
-    with st.chat_message("assistant"):
-        loading_placeholder = st.empty()
-        loading_placeholder.markdown("""
-        <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <p style="display: inline; margin-left: 12px; color: #5DADE2;">Pensando...</p>
-        """, unsafe_allow_html=True)
+    # 2. Processa resposta
+    with st.chat_message("assistant", avatar="🩺"):
+        # Marcador do assistente (para o loading ficar com fundo certo também)
+        st.markdown('<div class="assistant-marker"></div>', unsafe_allow_html=True)
         
-        # Processa a resposta da IA
+        placeholder = st.empty()
+        placeholder.markdown("⏳ *Pensando...*")
+        
         try:
             resposta = st.session_state.qa_chain.invoke({"input": pergunta})
             
-            # Extrai o texto da resposta
+            # Tratamento do texto da resposta
             if isinstance(resposta, dict):
                 texto = (
                     resposta.get("resposta")
@@ -126,28 +141,18 @@ if pergunta:
                         parsed.get("resposta")
                         or parsed.get("answer")
                         or parsed.get("result")
-                        or parsed.get("output")
-                        or parsed.get("text")
                         or str(parsed)
                     )
                 except Exception:
                     texto = str(resposta)
             
-            # Remove o loading
-            loading_placeholder.empty()
-            
-            # Animação de digitação
-            texto_placeholder = st.empty()
-            exibido = ""
-            
+            # Efeito de digitação
+            texto_exibido = ""
             for char in texto:
-                exibido += char
-                texto_placeholder.markdown(exibido)
-                time.sleep(0.004)
+                texto_exibido += char
+                placeholder.markdown(texto_exibido + "▌")
+                time.sleep(0.002)
             
-            # Salva no histórico
-            st.session_state.messages.append({"role": "assistant", "content": texto})
-            
+            placeholder.markdown(texto)
         except Exception as e:
-            loading_placeholder.empty()
-            st.error(f"Erro ao processar resposta: {str(e)}")
+            placeholder.markdown(f"⚠️ Ocorreu um erro ao obter a resposta: {e}")
