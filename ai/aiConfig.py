@@ -18,11 +18,8 @@ def criar_qa_chain_from_retriever(retriever, model_name: str):
     """
 
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "input"])
-
     llm = ChatGoogleGenerativeAI(model=model_name)
-
     stuff_chain = create_stuff_documents_chain(llm=llm, prompt=prompt, document_variable_name="context")
-
     qa_chain = create_retrieval_chain(retriever=retriever, combine_docs_chain=stuff_chain)
 
     return qa_chain, stuff_chain

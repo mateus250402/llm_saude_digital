@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import time
+from utils.output import save_answer_json
 
 # Configuração de CSS Avançada para Layout tipo "Bubble"
 st.markdown("""
@@ -114,7 +115,7 @@ if pergunta:
     exibir_mensagem("user", pergunta)
 
     # 2. Processa resposta
-    with st.chat_message("assistant", avatar="🩺"):
+    with st.chat_message("assistant", avatar="🤖"):
         # Marcador do assistente (para o loading ficar com fundo certo também)
         st.markdown('<div class="assistant-marker"></div>', unsafe_allow_html=True)
         
@@ -154,5 +155,12 @@ if pergunta:
                 time.sleep(0.002)
             
             placeholder.markdown(texto)
+            
+            save_answer_json(
+                answer=texto,
+                question=pergunta,
+                output_dir="output"
+            )
+            
         except Exception as e:
             placeholder.markdown(f"⚠️ Ocorreu um erro ao obter a resposta: {e}")

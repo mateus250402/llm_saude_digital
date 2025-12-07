@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from langchain.schema import Document
 
-def save_answer_json(answer: str, question: str, docs: List[Document], output_dir: str = "output") -> Dict[str, Any]:
+def save_answer_json(answer: str, question: str, output_dir: str = "output") -> Dict[str, Any]:
     """
     Salva a resposta em JSON e RETORNA o objeto de dados.
     Use o retorno desta função para exibir na sua tela.

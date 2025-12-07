@@ -23,10 +23,15 @@ if not pdfs:
 # Checkbox para selecionar todos
 selecionar_todos = st.checkbox("Selecionar todos os protocolos")
 
+def mostrar_pdf(nome: str) -> str:
+    base, _ = os.path.splitext(nome)
+    return base.replace("_", " ").title()
+
 if selecionar_todos:
     opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs, default=pdfs)
 else:
-    opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs)
+    opcoes = st.multiselect("Selecione os protocolos que deseja utilizar:", pdfs,
+    format_func=mostrar_pdf)
 
 if st.button("Processar PDFs") and opcoes:
 
