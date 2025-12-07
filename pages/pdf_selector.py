@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from pipeline import run_pipeline
+from ai.pipeline import run_pipeline
 
 st.title("📂 Seleção de Protocolos em PDF")
 

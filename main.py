@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 
 st.set_page_config(page_title="LLM Saúde", page_icon="🩺")
 
@@ -25,5 +24,4 @@ if not st.session_state.logged_in:
     login_screen()
     st.stop()
 
-# Já autenticado → redireciona para a página de PDFs
 st.switch_page("pages/pdf_selector.py")

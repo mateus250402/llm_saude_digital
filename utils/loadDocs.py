@@ -10,8 +10,8 @@ from langchain.schema import Document
 
 def reset_index(
     index_dir: str = "faiss_index",
-    processed_file: str = "processed.json",
-    docs_cache: str = "docs_cache.json"
+    processed_file: str = "json/processed.json",
+    docs_cache: str = "json/docs_cache.json"
 ):
     """Remove o índice FAISS e arquivos auxiliares, garantindo uma sessão limpa."""
     if os.path.exists(index_dir):

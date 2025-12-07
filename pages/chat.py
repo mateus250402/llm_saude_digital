@@ -90,7 +90,7 @@ if "messages" not in st.session_state:
 # --- FUNÇÃO AUXILIAR PARA EXIBIR MENSAGENS COM MARCADOR E AVATAR ---
 def exibir_mensagem(role, content):
     # Define o ícone com base no papel
-    icone = "👤" if role == "user" else "🩺"
+    icone = "👤" if role == "user" else "🤖"
     
     with st.chat_message(role, avatar=icone):
         # Injeta o marcador invisível para o CSS funcionar

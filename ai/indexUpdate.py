@@ -16,8 +16,8 @@ def build_or_update_index(
     pdf_paths: List[str],
     embeddings,
     index_dir: str = "faiss_index",
-    processed_file: str = "processed.json",
-    docs_cache: str = "docs_cache.json",
+    processed_file: str = "json/processed.json",
+    docs_cache: str = "json/docs_cache.json",
     chunk: int = 1000,
     overlap: int = 200,
 ):
