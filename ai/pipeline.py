@@ -24,7 +24,7 @@ def run_pipeline(pdf_list):
 
     retriever = db.as_retriever(search_kwargs={"k": 200})
     qa_chain, stuff_chain = criar_qa_chain_from_retriever(
-        retriever, model_name="gemini-2.5-flash"
+        retriever, model_name="gemini-flash-lite-latest"
     )
 
     return qa_chain, stuff_chain, all_docs
