@@ -10,7 +10,7 @@ def run_pipeline(pdf_list):
 
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    reset_index()
+    #reset_index()
     db, all_docs = build_or_update_index(
         pdf_list, 
         embeddings,
@@ -22,7 +22,7 @@ def run_pipeline(pdf_list):
 
     inspect_docs(all_docs)
 
-    retriever = db.as_retriever(search_kwargs={"k": 20}, search_type="similarity")
+    retriever = db.as_retriever(search_kwargs={"k": 10}, search_type="similarity")
     qa_chain, stuff_chain = criar_qa_chain_from_retriever(
         retriever, model_name="gemini-2.5-flash"
     )

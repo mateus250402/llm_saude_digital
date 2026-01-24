@@ -26,15 +26,26 @@ def build_or_update_index(
     new_docs = []
 
     for pdf in pdf_paths:
-        pdf = os.path.normpath(pdf)
-        if not os.path.exists(pdf):
+        pdf_path = os.path.normpath(pdf)
+        if not os.path.exists(pdf_path):
             continue
-        h = _file_hash(pdf)
-        if processed.get(pdf) == h:
+
+        # MODO RÁPIDO: Checa apenas se o caminho do arquivo já existe na lista de processados
+        # Se quiser voltar ao modo seguro, use: h = file_hash(pdf_path)
+        if pdf_path in processed:
+            print(f"✅ Mantido do cache (via nome): {Path(pdf_path).name}")
             continue
-        docs = preparar_documentos(pdf, chunk, overlap)
+        
+        # Se não existe, aí sim processamos
+        print(f"⚙️ Processando novo arquivo: {Path(pdf_path).name}")
+        
+        # Precisamos calcular o hash APENAS para salvar no registro (opcional, mas bom pra futuro)
+        # Ou podemos salvar apenas "ok" ou data de modificação se não quiser ler o arquivo
+        h = _file_hash(pdf_path) 
+        
+        docs = preparar_documentos(pdf_path, chunk, overlap)
         new_docs.extend(docs)
-        processed[pdf] = h
+        processed[pdf_path] = h
 
     all_docs = cached_docs + new_docs
 
