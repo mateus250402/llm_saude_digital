@@ -17,14 +17,14 @@ def run_pipeline(pdf_list):
         index_dir="faiss_index",
         processed_file="json/processed.json",
         docs_cache="json/docs_cache.json",
-        chunk=800, overlap=150,
+        chunk=3000, overlap=500,
     )
 
     inspect_docs(all_docs)
 
-    retriever = db.as_retriever(search_kwargs={"k": 8}, searcgh_type="similarity")
+    retriever = db.as_retriever(search_kwargs={"k": 20}, search_type="similarity")
     qa_chain, stuff_chain = criar_qa_chain_from_retriever(
-        retriever, model_name="gemini-flash-lite-latest"
+        retriever, model_name="gemini-2.5-flash"
     )
 
     return qa_chain, stuff_chain, all_docs

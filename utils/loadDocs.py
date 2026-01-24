@@ -26,6 +26,18 @@ def reset_index(
     print("🔄 Índice FAISS resetado com sucesso!\n")
 
 def preparar_documentos(pdf_path: str, chunk: int = 1000, overlap: int = 200) -> List[Document]:
+    # Gerencia verificação de cache
+    processed_file = "json/processed.json"
+    current_hash = _file_hash(pdf_path)
+    processed_data = _load_processed(processed_file)
+
+    # Se o arquivo já foi processado e não mudou, retorna vazio
+    if processed_data.get(pdf_path) == current_hash:
+        print(f"⏭️  Documento já indexado (ignorando): {Path(pdf_path).name}")
+        return []
+
+    print(f"📄 Processando novo documento: {Path(pdf_path).name}")
+
     loader = PyPDFLoader(pdf_path)
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk, chunk_overlap=overlap)
     try:
@@ -49,6 +61,11 @@ def preparar_documentos(pdf_path: str, chunk: int = 1000, overlap: int = 200) ->
         source = doc.metadata.get("source", Path(pdf_path).name)
         doc.page_content = f"Fonte: {source} | Página do leitor: {page}\n\n{doc.page_content}"
 
+    # Atualiza o arquivo de controle com o novo hash
+    processed_data[pdf_path] = current_hash
+    os.makedirs(os.path.dirname(processed_file), exist_ok=True)
+    _save_processed(processed_file, processed_data)
+
     return docs
 
 def _file_hash(path: str) -> str:
@@ -61,7 +78,12 @@ def _file_hash(path: str) -> str:
 def _load_processed(path: str):
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            try:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return data
+            except json.JSONDecodeError:
+                pass
     return {}
 
 def _save_processed(path: str, data):

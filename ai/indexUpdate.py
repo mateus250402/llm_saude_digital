@@ -18,8 +18,8 @@ def build_or_update_index(
     index_dir: str = "faiss_index",
     processed_file: str = "json/processed.json",
     docs_cache: str = "json/docs_cache.json",
-    chunk: int = 1000,
-    overlap: int = 200,
+    chunk: int = 3000,
+    overlap: int = 500,
 ):
     processed = _load_processed(processed_file)
     cached_docs = _load_docs_cache(docs_cache)
